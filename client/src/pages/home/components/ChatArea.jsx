@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import {ClearChatMessages} from "../../../apicalls/chats.js";
 import {SetAllChats} from "../../../redux/userSlice.js";
 
-const ChatArea = () => {
+const ChatArea = ({socket}) => {
     const [newMessage, setNewMessage] = useState('')
 
     const { selectedChat, user, allChats } = useSelector(state => state.userReducer)

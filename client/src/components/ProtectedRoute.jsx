@@ -14,7 +14,7 @@ const ProtectedRoute = ({children}) => {
 
     const getCurrentUser = async () => {
         const token = localStorage.getItem('token')
-        console.log(token)
+
         if(!token) {
             navigate('/login')
             return

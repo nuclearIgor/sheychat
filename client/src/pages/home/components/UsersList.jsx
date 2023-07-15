@@ -9,9 +9,9 @@ import {hourAndMinuteFormatter} from "../../../utils/dateFormatter.js";
 const UsersList = ({searchKey}) => {
     let {allUsers, allChats, user, selectedChat} = useSelector(state => state.userReducer)
 
-    useEffect(() => {
-        console.log('chats: \n', allChats)
-    }, [allChats])
+    // useEffect(() => {
+    //     console.log('chats: \n', allChats)
+    // }, [allChats])
 
     allUsers = allUsers?.filter(
         u => u.name.toLowerCase().includes(searchKey.toLowerCase()) ||
