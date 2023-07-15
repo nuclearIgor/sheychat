@@ -5,9 +5,9 @@ import UsersList from "./components/UsersList.jsx";
 import {useSelector} from "react-redux";
 
 import { io } from 'socket.io-client'
+const socket = io("http://localhost:3000")
 
 const Home = () => {
-    const socket = io("http://localhost:3000")
 
     const [searchKey, setSearchKey] = useState("")
     const { selectedChat, user } = useSelector(state => state.userReducer)
@@ -16,24 +16,8 @@ const Home = () => {
         // join the room
         if(user) {
             socket.emit('join-room', user._id)
-
-        //     send new message to receiver (user 3)
-            socket.emit('send-message', {
-                text: "hi user 3. I am user 2.",
-                sender: user._id,
-                recipient: "64b225c10744d210ee9301df"
-            })
-
-        //     receive message as user 3
-            socket.on('receive-message', (data) => {
-                console.log('msgdata: ', data)
-            })
-
         }
 
-        socket.on('new-message-from-server', (data) => {
-            console.log(data)
-        })
     }, [user])
 
     return (

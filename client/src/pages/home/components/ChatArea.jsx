@@ -5,39 +5,69 @@ import {HideLoader, ShowLoader} from "../../../redux/loaderSlice.js";
 import toast from "react-hot-toast";
 import {ClearChatMessages} from "../../../apicalls/chats.js";
 import {SetAllChats} from "../../../redux/userSlice.js";
+import {store} from "../../../redux/store.js";
 
 const ChatArea = ({socket}) => {
     const [newMessage, setNewMessage] = useState('')
+    const [messages, setMessages] = useState([])
+
 
     const { selectedChat, user, allChats } = useSelector(state => state.userReducer)
     const recipientUser = selectedChat?.members.find(mem => mem._id !== user._id)
 
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        socket.on('receive-message', (message) => {
+            // console.log(message)
+            const tempSelectedChat = store.getState().userReducer.selectedChat
+            if (tempSelectedChat._id === message.chat) {
+                setMessages((prevState) => [...prevState, message])
+            }
+        })
+
+        return () => {
+            socket.off('receive-message')
+        }
+    }, [])
+
+    useEffect(() => {
+    //     scroll messages to bottom
+        const messagesContainer = document.getElementById('messages')
+        messagesContainer.scrollTop = messagesContainer.scrollHeight
+    }, [messages])
+
+
     const handleMessageSend = async () => {
         try {
-            dispatch(ShowLoader())
+            // dispatch(ShowLoader())
 
             const message = {
                 chat: selectedChat._id,
                 sender: user._id,
                 text: newMessage
             }
-
+            // mandar a msg pelo socket
+            socket.emit('send-message', {
+                ...message,
+                members: selectedChat.members.map(member => member._id),
+                read: false
+            })
+            // salvar no banco
             const res = await SendMessage(message)
 
-            dispatch(HideLoader())
+            // dispatch(HideLoader())
 
             if(res.success) {
                 setNewMessage("")
             }
 
         } catch (e) {
-            dispatch(HideLoader())
+            // dispatch(HideLoader())
             toast.error(e.message)
         }
     }
 
-    const [messages, setMessages] = useState([])
 
     const getMessages = async () => {
         try {
@@ -102,7 +132,7 @@ const ChatArea = ({socket}) => {
             </div>
 
             {/*MESSAGES*/}
-            <div className={'h-[50vh] overflow-y-scroll'}>
+            <div className={'h-[50vh] overflow-y-scroll'} id={'messages'}>
                 <div className={'flex flex-col gap-2'}>
                     {messages.map((message) => {
 

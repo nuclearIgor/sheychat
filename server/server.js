@@ -31,12 +31,11 @@ io.on('connection', (socket) => {
         socket.join(userId)
     })
 
-    socket.on('send-message', ({text, sender, recipient}) => {
-        // send message to recipient
-        io.to(recipient).emit('receive-message', {
-            text,
-            sender
-        })
+    // send message to clients in the members array
+    socket.on('send-message', (message) => {
+        console.log(message)
+        io.to(message.members[0]).to(message.members[1])
+            .emit("receive-message", message)
     })
     // console.log('connected with id: ', socket.id)
 })
