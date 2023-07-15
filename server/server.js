@@ -19,5 +19,5 @@ app.use('/api/chats', chatsRoute)
 app.use('/api/messages', messagesRoute)
 
 app.listen(port, () => {
-    console.log(`listeing on ${port}`)
+    console.log(`listening on ${port}`)
 })

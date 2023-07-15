@@ -50,16 +50,16 @@ const ProtectedRoute = ({children}) => {
     return (
         <div className={'h-screen w-screen bg-gray-100 p-2'}>
 
-            <div className={'flex justify-between p-5'}>
+            <div className={'flex justify-between p-5 bg-primary rounded'}>
                 <div className={'flex items-center gap-1 text-2xl'}>
                     <i className="ri-chat-1-line"></i>
-                    <h1 className={'text-primary text-2xl uppercase font-semibold'}>papafrete</h1>
+                    <h1 className={'text-primary text-2xl uppercase font-semibold text-white'}>papafrete</h1>
                 </div>
 
-                <div className={'flex gap-1 text-md items-center'}>
+                <div className={'flex gap-1 text-md items-center text-white'}>
                     <i className="ri-user-line"></i>
 
-                    <h1 className={'underline'}>{user?.name}</h1>
+                    <h1 className={'underline text-white'}>{user?.name}</h1>
 
                     <i className="ri-logout-circle-r-line ml-5 text-xl cursor-pointer"
                         onClick={() => {

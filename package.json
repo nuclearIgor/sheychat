@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server/server.js"
+    "watch": "nodemon server/server.js",
+    "dev:client": "npm run watch & npm run dev --prefix client"
   },
   "keywords": [],
   "author": "",

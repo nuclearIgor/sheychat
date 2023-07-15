@@ -44,10 +44,10 @@ const UsersList = ({searchKey}) => {
     }
 
     const getData = () => {
-        return allUsers.filter(
-            u => u.name.toLowerCase().includes(searchKey.toLowerCase()) ||
-                allChats.some(chat => chat.members?.map(mem => mem._id).includes(u._id))
-        )
+        //   if search key is empty return all chats
+        if (searchKey === "") return allChats
+        //     else return filtered chats and users
+        return allUsers.filter(user => user.name.toLowerCase().includes(searchKey.toLowerCase()))
     }
 
     const isSelected = (userId) => {
@@ -89,7 +89,12 @@ const UsersList = ({searchKey}) => {
 
     return (
         <div className={'flex flex-col gap-3 mt-5'}>
-            {allUsers.map(userObj => {
+            {getData()?.map(chatOrUserObj => {
+                let userObj = chatOrUserObj
+                if (chatOrUserObj.members){
+                    userObj = chatOrUserObj.members.find(mem => mem._id !== user._id)
+                }
+
                 return (
                     <div key={userObj._id} className={`
                         ${ isSelected(userObj._id) ? 'border-2 border-primary' : ''}
